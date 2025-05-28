@@ -1,18 +1,17 @@
-html {
+html, body {
   height: 100%;
+  margin: 0;
   background-color: #001f3f;
 }
 body {
-  margin: 0;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
-  background: transparent;    /* ← make sure body is transparent */
+  background: transparent;
 }
 
 /* sticky top menu */
-.menu {
-  position: absolute;
+.navbar {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -21,28 +20,29 @@ body {
   align-items: center;
   padding: 1rem 2rem;
   background: transparent;
-  z-index: 2;
   box-sizing: border-box;
+  z-index: 3;
+  height: 100px;
 }
 
-.menu .logo {
+.navbar .nav-logo {
   font-size: 3rem;
   font-weight: 700;
   color: #ffffff;
 }
 
-.menu .separator {
+.navbar .separator {
   font-size: 3rem;
   margin: 0 3rem;
   color: #ffffff;
 }
 
-.menu .nav-buttons {
+.navbar .nav-buttons {
   display: flex;
   gap: 2.5rem;
 }
 
-.menu .nav-buttons a {
+.navbar .nav-buttons a {
   font-size: 2.25rem;
   font-weight: 500;
   color: #ffffff;
@@ -52,12 +52,12 @@ body {
   transition: transform 0.2s ease;
 }
 
-.menu .nav-buttons a:hover,
-.menu .nav-buttons a:focus {
+.navbar .nav-buttons a:hover,
+.navbar .nav-buttons a:focus {
   transform: translateY(-2px);
 }
 
-.menu .nav-buttons a::after {
+.navbar .nav-buttons a::after {
   content: "";
   position: absolute;
   bottom: -4px;
@@ -68,19 +68,35 @@ body {
   transition: width 0.2s ease;
 }
 
-.menu .nav-buttons a:hover::after,
-.menu .nav-buttons a:focus::after {
+.navbar .nav-buttons a:hover::after,
+.navbar .nav-buttons a:focus::after {
   width: 100%;
+}
+
+.navbar.scrolled {
+  background-color: #001f3f;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* footer */
+.footer {
+  position: relative;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.footer .contact {
+  font-size: 1.25rem;
+  color: #ffffff;
 }
 
 /* visual section */
 .visual {
   position: relative;
-  /* fill exactly the viewport, behind the nav */
-  height: 100vh;
   width: 100%;
-
-  /* image + overlay in one shorthand */
+  min-height: 100vh;
   background:
           linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
           url('../assets/background.png') center/cover no-repeat;
@@ -88,6 +104,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 /* slide-in text */
@@ -197,6 +214,179 @@ body {
   color: #dddddd;
 }
 
+/* Articles */
+
+.articles-container {
+  display: grid;
+  gap: 1.5rem;
+  padding: 3rem 1rem;
+
+  grid-template-columns: repeat(auto-fit, minmax(70vh, 1fr));
+  margin-top: 100px;
+  flex: 1;
+  justify-items: center;
+  row-gap: 10rem;
+}
+
+/* CARD BASE STYLES */
+.article-card {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 80vh;
+  max-height: 60vh;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* IMAGE */
+.article-figure {
+  margin: 0;
+  line-height: 0; /* remove whitespace below img */
+}
+.article-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* CONTENT */
+.article-link {
+  text-decoration: none;       /* remove the default underline */
+  color: inherit;              /* keep your current text color */
+}
+.article-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;     /* center title + time as a group */
+  gap: 1rem;                   /* space between title & time */
+  flex-wrap: wrap;             /* wrap gracefully on very narrow screens */
+}
+.article-title {
+  margin: 0.7rem;                   /* remove default spacing */
+  font-size: 1.75rem;          /* keep your existing sizing */
+  line-height: 1.2;
+  text-align: center;          /* center the text within its own box */
+}
+
+/* ─── Reading time styling ─────────────────────────────────────────── */
+.article-time {
+  font-size: 0.9rem;
+  color: #555;                 /* or your existing meta color */
+}
+
+/* ─── Meta row: author left, date right ───────────────────────────── */
+.article-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #555;                 /* same color as time or tweak to taste */
+  padding: 0 1rem;             /* optional horizontal breathing room */
+  margin-bottom: 0.5rem;
+}
+.article-author {
+  /* sits at start by default */
+}
+.article-date {
+  font-weight: bold;           /* highlight the date */
+}
+
+@media (min-width: 600px) and (max-width: 900px) {
+  .articles-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .articles-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.article-page {
+  padding-top: 120px;    /* navbar (100px) + 20px gap */
+  padding-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+}
+
+/* White card container */
+.article-page__container {
+  background: #ffffff;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 1rem;
+  padding: 2rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+/* Header: title and meta */
+.article-page__header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.article-page__title {
+  margin: 0 0 0.5rem;
+  font-size: 2.25rem;
+  line-height: 1.2;
+  color: #001f3f;
+}
+
+.article-page__meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 0.9rem;
+  color: #555555;
+}
+
+.article-page__author,
+.article-page__date {
+  display: inline-block;
+}
+
+/* Body content */
+.article-page__body {
+  line-height: 1.6;
+  color: #222222;
+}
+
+.article-page__body p {
+  margin-bottom: 1rem;
+}
+
+/* Figures/images */
+.article-page__figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.article-page__image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.article-page__figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+footer {
+  margin-top: auto;
+}
+
 /* particles canvas */
 #tsparticles {
   position: fixed;
@@ -206,17 +396,4 @@ body {
   height: 100vh;
   z-index: -1;           /* behind all other elements */
   pointer-events: none;  /* so it never blocks clicks or hovers */
-}
-
-/* footer */
-.footer {
-  width: 100%;
-  background: rgba(0,0,0,0.5);
-  text-align: center;
-  padding: 1rem 0;
-}
-
-.footer .contact {
-  font-size: 1.25rem;
-  color: #ffffff;
 }
